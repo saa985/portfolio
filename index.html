@@ -474,7 +474,7 @@ Responsive UI: Built with Bootstrap and jQuery for a fast, mobile-friendly exper
         </div>
         <div id="resume" class="sidebar-content"><h2>View Resume</h2><hr><br><p>My professional background.</p><br>
             <div class="d-grid gap-2">
-                <a href="YOUR_GITHUB_RAW_PDF_URL_HERE" target="_blank" class="btn">Download / View Resume</a>
+                <a id="resumeBt" class="btn">Download / View Resume</a>
             
             </div>
         </div>
@@ -629,6 +629,10 @@ document.getElementById('demoKR').addEventListener('click', function() {
 
 document.getElementById('demoCB').addEventListener('click', function() {
     window.open('https://saa985.github.io/CBS_Seeker/');
+});
+
+document.getElementById('resumeBt').addEventListener('click', function() {
+    window.open('Myresume-5.pdf', '_blank');
 });
 
 
