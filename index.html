@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asur | Frontend Web Developer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    
+    <style>
+        /* ===== LIGHT (daylight) THEME - default ===== */
+        :root {
+            color-scheme: light;
+            --bg-body: #f7f5ef;
+            --bg-card: #ffffff;
+            --bg-footer: #efeadb;
+            --bg-sidebar: #fffdf8;
+            --section-bg: linear-gradient(180deg, #ffffff 0%, #faf6e8 100%);
+            --about-bg: radial-gradient(circle, rgba(140,110,30,0.18) 1px, transparent 1.6px) 0 0 / 24px 24px, #f7f5ef;
+            --body-bg: radial-gradient(circle at 50% -20%, #fff1c4 0%, #f7f5ef 65%);
+            --hero-bg: radial-gradient(circle at 85% 15%, rgba(212,160,23,0.20), transparent 45%), linear-gradient(135deg, #fffdf5, #f4eedb);
+            --hero-grid: linear-gradient(rgba(120,95,20,0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(120,95,20,0.08) 1px, transparent 1px);
+            --hero-shadow: 0 20px 40px rgba(90,70,20,0.10);
+            --gold: #d9a521;
+            --gold-light: #e8c55a;
+            --accent: #8a6508;
+            --grad-a: #a87a0c;
+            --grad-b: #d9a521;
+            --glow: rgba(212,160,23,0.12);
+            --heading: #14141a;
+            --text: #2b2b33;
+            --text-muted: #5f6068;
+            --border: #e6e0cc;
+            --shadow: 0 4px 18px rgba(80,65,20,0.08);
+            --btn-hover-bg: #14141a;
+            --btn-hover-text: #ffffff;
+            --faq-active: #f6f0dc;
+            --input-bg: #ffffff;
+            --input-border: #cfc8b0;
+            --input-outline: #cfc8b0;
+            --transition: all 0.4s ease;
+            --container: 1200px;
+            --pad: max(5%, calc((100% - var(--container)) / 2));
+        }
+
+        /* ===== DARK THEME (your original black & candle-black look) ===== */
+        :root[data-theme="dark"] {
+            color-scheme: dark;
+            --bg-body: #0a0a0c;
+            --bg-card: #1a1a1e;
+            --bg-footer: #0d0d10;
+            --bg-sidebar: #252528;
+            --section-bg: #121214;
+            --about-bg: #0a0a0c;
+            --body-bg: radial-gradient(circle at 50% -20%, #1a1a2e 0%, #0a0a0c 70%);
+            --hero-bg: linear-gradient(135deg, #111115, #0d0d10);
+            --hero-grid: none;
+            --hero-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            --gold: #d4af37;
+            --gold-light: #ffdf70;
+            --accent: #d4af37;
+            --grad-a: #d4af37;
+            --grad-b: #ffdf70;
+            --glow: rgba(212,175,55,0.4);
+            --heading: #ffffff;
+            --text: #e0e0e0;
+            --text-muted: #a0a0a0;
+            --border: #2a2a30;
+            --shadow: none;
+            --btn-hover-bg: #ffffff;
+            --btn-hover-text: #000000;
+            --faq-active: #232327;
+            --input-bg: #1a1a1a;
+            --input-border: #333;
+            --input-outline: #ffffff;
+        }
+        
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; -moz-text-size-adjust: 100%; text-size-adjust: 100%; }
+        body { font-family: 'Inter', sans-serif; background: var(--body-bg); background-color: var(--bg-body); color: var(--text); line-height: 1.6; }
+
+        /* Navigation */
+        nav { padding: 24px var(--pad); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; }
+        .nav-links { display: flex; flex-wrap: wrap; gap: 8px 18px; }
+        .nav-links a { color: var(--text); text-decoration: none; font-weight: 500; font-size: 0.9rem; white-space: nowrap; }
+
+        /* Hero */
+        .hero { 
+            min-height: clamp(380px, 68vh, 640px); margin: 20px var(--pad); border-radius: clamp(20px, 3vw, 30px); display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: clamp(48px, 8vw, 90px) clamp(20px, 6vw, 80px);
+            background: var(--hero-bg); border: 1px solid var(--border); box-shadow: var(--hero-shadow);
+            position: relative; overflow: hidden;
+        }
+        .hero::before {
+            content: ''; position: absolute; top: -50%; left: -10%; width: 600px; height: 600px;
+            background: radial-gradient(circle, rgba(212, 175, 55, 0.15) 0%, transparent 70%);
+            z-index: 0; pointer-events: none;
+        }
+        .hero::after {
+            content: ''; position: absolute; inset: 0; z-index: 0; pointer-events: none;
+            background-image: var(--hero-grid); background-size: 44px 44px;
+            -webkit-mask-image: radial-gradient(ellipse at center, #000 0%, transparent 75%);
+            mask-image: radial-gradient(ellipse at center, #000 0%, transparent 75%);
+        }
+        h1 { font-size: clamp(2.2rem, 1.2rem + 4.5vw, 4.5rem); color: var(--heading); line-height: 1.1; margin-bottom: 20px; position: relative; z-index: 1; }
+        .gold-text {
+            background: linear-gradient(90deg, var(--grad-a), var(--grad-b));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 8px var(--glow));
+        }
+        .btn { padding: 15px 40px; border: none; background: var(--gold); color: #000; font-weight: 800; border-radius: 50px; cursor: pointer; transition: var(--transition); text-decoration: none; position: relative; z-index: 1; display: inline-block; }
+        .btn:hover { background: var(--btn-hover-bg); color: var(--btn-hover-text); transform: scale(1.05); }
+
+        /* About & Experience Section */
+        .section-padding { padding: clamp(48px, 8vw, 96px) var(--pad); text-align: center; border-bottom: 1px solid var(--border); background: var(--section-bg); }
+        #about { background: var(--about-bg); }
+        h2 { font-size: clamp(1.6rem, 1.2rem + 1.6vw, 2.4rem); margin-bottom: 20px; color: var(--heading); }
+        
+        .experience-wrapper { display: grid; grid-template-columns: auto auto; justify-content: center; align-items: center; gap: clamp(24px, 5vw, 64px); margin-top: 40px; text-align: left; }
+        .exp-badge { position: relative; width: 140px; height: 140px; background: var(--gold); border-radius: 50%; color: #000; font-weight: 800; font-size: 2.5rem; flex-shrink: 0; cursor: default; outline: none; transition: transform 0.35s ease, box-shadow 0.35s ease; box-shadow: var(--shadow); }
+        .exp-badge:hover, .exp-badge:focus { transform: scale(1.06); box-shadow: 0 0 0 8px rgba(217,165,33,0.22); }
+        .exp-default, .exp-hover { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; align-items: center; border-radius: 50%; transition: opacity 0.3s ease, transform 0.3s ease; }
+        .exp-default span { font-size: 0.9rem; font-weight: 600; margin-top: -5px; }
+        .exp-hover { padding: 16px; text-align: center; font-size: 0.82rem; font-weight: 700; line-height: 1.3; opacity: 0; transform: scale(0.9); text-wrap: balance; }
+        .exp-badge:hover .exp-default, .exp-badge:focus .exp-default { opacity: 0; transform: scale(0.9); }
+        .exp-badge:hover .exp-hover, .exp-badge:focus .exp-hover { opacity: 1; transform: scale(1); }
+        .services-list { list-style: none; display: grid; gap: 12px; }
+        .services-list li { display: flex; align-items: center; gap: 12px; font-weight: 500; }
+        .services-list li::before { content: '•'; color: var(--gold); font-size: 1.5rem; }
+
+        /* Projects Grid */
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); gap: clamp(16px, 2.5vw, 28px); max-width: 960px; margin: 40px auto 0; }
+        .card { background: var(--bg-card); padding: 25px; border-radius: 20px; border: 1px solid var(--border); box-shadow: var(--shadow); transition: var(--transition); cursor: pointer; }
+        .card:hover { border-color: var(--gold); transform: translateY(-5px); }
+        .card { text-align: center; min-width: 0; padding: clamp(20px, 3vw, 30px); }
+        .card h3, .info-section h3 { font-size: clamp(1.1rem, 1rem + 0.6vw, 1.4rem); font-weight: 700; line-height: 1.3; color: var(--heading); }
+        .card h3 { margin-bottom: 10px; }
+        .card p { font-size: clamp(0.92rem, 0.9rem + 0.2vw, 1rem); line-height: 1.6; color: var(--text-muted); }
+        
+        .info-section { padding: clamp(48px, 8vw, 96px) var(--pad); text-align: center; background: var(--about-bg); }
+        .info-tag { display: inline-block; padding: 8px 20px; background: var(--gold); color: #000; font-weight: 800; border-radius: 50px; margin-bottom: 15px; }
+        .info-actions { display: flex; flex-direction: column; gap: 15px; max-width: 400px; margin: 30px auto 0; }
+        .info-btn { padding: 15px; border: 1px solid var(--border); background: var(--bg-card); color: var(--heading); border-radius: 12px; text-decoration: none; font-weight: 600; cursor: pointer; border: none; box-shadow: var(--shadow); width: 100%; transition: var(--transition); }
+        .info-btn:hover { border-color: var(--gold); background: var(--gold); color: #000; }
+
+        /* Footer */
+        .footer-section { background: var(--bg-footer); padding: clamp(40px, 6vw, 72px) var(--pad); text-align: center; border-top: 1px solid var(--border); }
+        .social-container { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: 20px; }
+        .social-btn { padding: 10px 20px; border: 1px solid var(--border); border-radius: 10px; color: var(--text); text-decoration: none; transition: var(--transition); font-weight: 600; font-size: 0.85rem; }
+        .social-btn:hover { border-color: var(--gold); background: rgba(212, 175, 55, 0.12); color: var(--accent); }
+
+        /* Sidebar Implementation */
+        .sidebar-activity { position: fixed; top: 0; right: -100%; width: 100%; max-width: 480px; height: 100%; background: var(--bg-sidebar); z-index: 9999; transition: 0.4s ease; padding: clamp(20px, 4vw, 40px); border-left: 2px solid var(--gold); overflow-y: auto;}
+        .sidebar-activity.active { right: 0; }
+        .sidebar-content { display: none; }
+        .sidebar-content.active { display: block; }
+        .close-btn { color: var(--accent); cursor: pointer; font-weight: 800; margin-bottom: 20px; display: block; }
+        
+        input, textarea, select{ padding: 15px; margin-bottom: 20px; background: var(--input-bg); border: 1px solid var(--input-border); color: var(--text); border-radius: 5px; width:100%; outline:1px solid var(--input-outline);}
+        
+        .faq-item{
+    background:var(--bg-card);
+    border:1px solid var(--border);
+    border-radius:12px;
+    margin-bottom:15px;
+    overflow:hidden;
+}
+
+.faq-header{
+    width:100%;
+    background:var(--bg-card);
+    color:var(--heading);
+    border:none;
+    padding:18px 20px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    cursor:pointer;
+    font-size:16px;
+    font-weight:600;
+    transition:.3s;
+}
+
+.faq-header:hover{
+    color:var(--accent);
+}
+
+.faq-header span{
+    color:var(--accent);
+    font-size:24px;
+    transition:.3s;
+}
+
+.faq-item.active .faq-header{
+    background:var(--faq-active);
+    color:var(--accent);
+}
+
+.faq-item.active .faq-header span{
+    transform:rotate(45deg);
+}
+
+.faq-body{
+    max-height:0;
+    overflow:hidden;
+    transition:max-height .35s ease;
+    background:var(--bg-body);
+}
+
+.faq-body p{
+    margin:0;
+    padding:18px 20px;
+    color:var(--text-muted);
+}
+
+.faq-item.active .faq-body{
+    max-height:250px;
+}
+
+.social-btn{
+    position:relative;
+    width:140px;
+    height:48px;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    border:1px solid var(--border);
+    border-radius:12px;
+
+    color:var(--text);
+    text-decoration:none;
+    overflow:hidden;
+
+    transition:.35s ease;
+    background:transparent;
+}
+
+.social-btn{
+    position:relative;
+    overflow:hidden;
+}
+
+
+
+.social-btn span{
+    position:absolute;
+    left:50%;
+    top:50%;
+    transform:translate(-50%,-50%);
+    transition:.35s;
+    white-space:nowrap;
+}
+
+.social-btn i{
+    position:absolute;
+    left:50%;
+    top:50%;
+    transform:translate(-50%,120%);
+    opacity:0;
+    transition:.35s;
+    font-size:1.3rem;
+    color:var(--accent);
+}
+
+.social-btn:hover span{
+    opacity:0;
+    transform:translate(-50%,-180%);
+}
+
+.social-btn:hover i{
+    opacity:1;
+    transform:translate(-50%,-50%);
+}
+
+        /* Theme toggle */
+        .theme-toggle {
+            position: fixed; right: 20px; bottom: 20px; z-index: 1000;
+            display: flex; align-items: center; gap: 8px;
+            padding: 11px 18px; border-radius: 50px; cursor: pointer;
+            background: var(--bg-card); color: var(--heading);
+            border: 1px solid var(--border); box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+            font-family: inherit; font-weight: 600; font-size: 0.85rem;
+            transition: var(--transition);
+        }
+        .theme-toggle i { color: var(--accent); font-size: 1.05rem; }
+        .theme-toggle:hover { border-color: var(--gold); transform: translateY(-3px); }
+
+        @media (min-width: 1600px) { :root { --container: 1360px; } }
+
+        @media (max-width: 700px) {
+            .experience-wrapper { grid-template-columns: 1fr; justify-items: center; }
+            .services-list { width: fit-content; }
+            nav { justify-content: center; }
+            .nav-links { justify-content: center; }
+        }
+
+        @media (max-width: 480px) {
+            .hero { margin-top: 10px; margin-bottom: 10px; }
+            .social-btn { width: 100%; max-width: 280px; }
+            .theme-toggle { right: 12px; bottom: 12px; padding: 12px 14px; }
+            .theme-toggle span { display: none; }
+        }
+    </style>
+    <script>
+        /* Apply saved theme before first paint (default = light) */
+        try {
+            document.documentElement.setAttribute('data-theme', localStorage.getItem('theme') === 'dark' ? 'dark' : 'light');
+        } catch (e) {
+            document.documentElement.setAttribute('data-theme', 'light');
+        }
+    </script>
+</head>
+<body>
+
+    <button id="theme-toggle" class="theme-toggle" type="button"></button>
+
+    <nav>
+        <div style="font-weight: 800; font-size: 1.5rem;">ASUR<span style="color: var(--accent);">.</span></div>
+        <div class="nav-links">
+            <a href="#about">About</a>
+            <a href="#projects">Projects</a>
+            <a href="#info-section">In-Depth</a>
+            <a href="#contact">Contact</a>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <h1>Hello, I'm <br><span class="gold-text">Samskruth</span></h1>
+        <p style="font-size: clamp(1rem, 0.9rem + 0.6vw, 1.25rem); color: var(--text-muted); margin-bottom: 30px; max-width: 600px; position: relative; z-index: 1;">Frontend Developer crafting premium digital experiences.</p>
+        <button class="btn" onclick="openSidebar('hire')">Hire Me</button>
+    </section>
+
+    <div id="sidebar" class="sidebar-activity">
+        <span class="close-btn" onclick="closeSidebar()">✕ CLOSE</span>
+        
+        <div id="hire" class="sidebar-content">
+    <h2>Hire Me</h2>
+    <!-- Added id="form-name" -->
+    <input type="text" id="form-name" placeholder="Name" required><br>
+    <div class="row">
+        <div class="col">
+           <h5>Hire me As</h5> 
+            </div>
+        <div class="col">
+            <!-- Added id="form-role" -->
+            <select id="form-role">
+                <option>Freelancer</option>
+                <option>Employee</option>
+            </select>
+        </div>
+    </div>
+    
+    <br>
+    <!-- Added id="form-message" -->
+    <textarea id="form-message" rows="5" placeholder="Your Message" required></textarea>
+    
+    <!-- Added id="mail-button" -->
+    <a href="mailto:your-email@example.com" id="mail-button" class="btn">Send Message</a>
+</div>
+
+        <div id="p1" class="sidebar-content"><h2>MYSORE CITY BUS STAND - BUS NUMBER SEEKER</h2>
+        <p>This is helpful tool developed to help passengers who travel inside Mysore in City Buses</p><br>
+        <details>
+            <summary>Read More</summary>
+            <p>Travelers at the City Bus Stand often face stress trying to locate the correct platform or bus number for their destination. CBS_Seeker simplifies this by providing a quick, searchable interface that maps locations to specific bus numbers and platform details based on local transit data.
+<br><br>
+🛠 Features<br>
+<ul>
+<li>Instant Search: An autocomplete-enabled search bar to quickly find locations.</li>
+<li>Efficient Data Mapping: Instantly retrieves Bus Numbers and Platform Numbers for a selected location.
+Responsive UI: Built with Bootstrap and jQuery for a fast, mobile-friendly experience.</li>
+<li>Lightweight: All logic, styling, and data are contained within a single file for maximum portability and speed.</li></ul>
+
+<br>
+💻 Tech Stack
+<ul>
+    <li>HTML5</li>
+<li>CSS3 (Bootstrap 5)</li>
+<li>JavaScript (jQuery)</li></ul></p>
+        </details><br>
+        <div class="d-grid gap-2">
+            <button class="btn btn-warning" id="demoCB" style="width:100%;">View Live Demo!!</button>
+        </div>
+        </div>
+        <div id="p2" class="sidebar-content"><h2>VTU USN FINDER</h2><p>An Helpful tool to find out an approximate USN of a person</p></div>
+        <div id="p3" class="sidebar-content"><h2>Kannada Rajyotsava Tribute Page</h2><p>A single page static site for tribute The Kannada rajyotsava.</p><br>
+        <details>
+            <summary>Read More</summary>
+            <div><br><hr><br>
+            <p>
+                A responsive, static web application engineered using native HTML5, CSS3, and JavaScript, designed to commemorate Karnataka Rajyotsava. The interface features a custom, themed UI incorporating a dynamic vertical timeline component that traces historical milestones from the Kadamba dynasty to modern achievements. Built with modular client-side architecture, the application integrates localized dual-language support (English and Kannada) via state-managed DOM rendering, fluid CSS animations, and a polished dark-mode aesthetic optimized for multi-device cross-platform responsiveness.
+
+
+            </p></div>
+        </details>
+        <br>
+        <div class="d-grid gap-2">
+            <button class="btn btn-warning" id="demoKR" style="width:100%;">View Live Demo!!</button>
+        </div>
+        </div>
+        <div id="faq" class="sidebar-content"><h2>Common FAQ</h2><p>Frequently asked questions.</p><hr><br>
+        
+        <div class="faq">
+
+    <div class="faq-item">
+        <button class="faq-header">
+            Do you work as a freelancer?
+            <span>+</span>
+        </button>
+        <div class="faq-body">
+            <p>Yes, I undertake freelance projects for websites, landing pages and web applications.</p>
+        </div>
+    </div>
+
+    <div class="faq-item">
+        <button class="faq-header">
+            Are you available for full-time jobs?
+            <span>+</span>
+        </button>
+        <div class="faq-body">
+            <p>Yes. I'm open to full-time opportunities.</p>
+        </div>
+    </div>
+
+    <div class="faq-item">
+        <button class="faq-header">
+            Which technologies do you use?
+            <span>+</span>
+        </button>
+        <div class="faq-body">
+            <p>HTML, CSS, JavaScript, Bootstrap, jQuery and more.</p>
+        </div>
+    </div>
+
+    <div class="faq-item">
+        <button class="faq-header">
+            What is this "Asur."?
+            <span>+</span>
+        </button>
+        <div class="faq-body">
+            <p>It is my Digital Watermark. think it's like an artist's signature embedded quietly into a painting, but for code or digital media</p>
+        </div>
+    </div>
+
+    <div class="faq-item">
+        <button class="faq-header">
+            How long does a project take?
+            <span>+</span>
+        </button>
+        <div class="faq-body">
+            <p>Usually between a few days and several weeks depending on requirements.</p>
+        </div>
+    </div>
+
+    <div class="faq-item">
+        <button class="faq-header">
+            How can I contact you?
+            <span>+</span>
+        </button>
+        <div class="faq-body">
+            <p>Use the Hire Me form or my social links below.</p>
+        </div>
+    </div>
+
+</div>
+        
+        </div>
+        <div id="resume" class="sidebar-content"><h2>View Resume</h2><hr><br><p>My professional background.</p><br>
+            <div class="d-grid gap-2">
+                <a href="YOUR_GITHUB_RAW_PDF_URL_HERE" target="_blank" class="btn">Download / View Resume</a>
+            
+            </div>
+        </div>
+    </div>
+
+    <section id="about" class="section-padding">
+        <h2>About Me</h2>
+        <p style="max-width: 800px; margin: 0 auto; font-size: clamp(1rem, 0.95rem + 0.3vw, 1.15rem); color: var(--text-muted);">I specialize in building responsive, high-performance web applications. My focus is on writing maintainable code and delivering pixel-perfect designs.</p>
+        
+        <div class="experience-wrapper">
+            <div class="exp-badge" tabindex="0" aria-label="2 years experience in freelancing">
+                <div class="exp-default">2 <span>Years Exp.</span></div>
+                <div class="exp-hover">2 years experience in freelancing</div>
+            </div>
+            <ul class="services-list">
+                <li>Responsive Layouts</li>
+                <li>Professional Services</li>
+                <li>Deadline delivery</li>
+                <li>Reliable Collaboration</li>
+            </ul>
+        </div>
+    </section>
+
+    <section id="projects" class="section-padding">
+        <h2>Featured Projects</h2>
+        <div class="grid">
+            <div class="card" onclick="openSidebar('p1')"><h3>CBS SEEKER</h3><p>A helpful tool developed to help passengers who travel inside Mysore in City Buses</p></div>
+            
+            <div class="card" onclick="openSidebar('p3')"><h3>Kannada Rajyotsava Tribute Page</h3><p>A single page static site for tribute The Kannada rajyotsava.</p></div>
+        </div>
+    </section>
+
+    <section class="info-section" id="info-section">
+        <div class="info-tag">In-Depth Details</div>
+        <h3>Some more details of me!</h3>
+        <div class="info-actions">
+            <button class="info-btn" onclick="openSidebar('faq')">COMMON FAQ</button>
+            <button class="info-btn" onclick="openSidebar('resume')">VIEW RESUME</button>
+        </div>
+    </section>
+
+    <footer id="contact" class="footer-section">
+        <div style="font-size: clamp(1.4rem, 1.1rem + 1.2vw, 1.8rem); font-weight: 800; margin-bottom: 10px;">Contact <span style="color: var(--accent);">ME</span></div>
+        <p style="color: var(--text-muted); margin-bottom: 30px;">Let's build something extraordinary together.</p>
+    <div class="social-container">
+    <a href="https://instagram.com/samskruth_asur" class="social-btn" onclick="return confirm('Confirming this will bring you to Instagram account');">
+        <span>Instagram</span>
+        <i class="bi bi-instagram"></i>
+    </a>
+
+    <a href="https://wa.me/919019716142" class="social-btn" onclick="return confirm('Confirming this will bring you to WhatsApp');">
+        <span>WhatsApp</span>
+        <i class="bi bi-whatsapp"></i>
+    </a>
+
+    <a href="mailto: agnirao456@gmail.com" class="social-btn" onclick="return confirm('Confirming this will open your E-mail client');">
+        <span>E-mail</span>
+        <i class="bi bi-envelope-fill"></i>
+    </a>
+
+    <a href="https://www.linkedin.com/in/samskruth-dv-91ab702a2" class="social-btn" onclick="return confirm('Confirming this will bring you to LinkedIn');">
+    <span>LinkedIn</span>
+    <i class="bi bi-linkedin"></i>
+</a>
+
+</div>
+
+    </footer>
+
+    <script>
+        (function () {
+            var root = document.documentElement;
+            var btn = document.getElementById('theme-toggle');
+            function apply(theme) {
+                root.setAttribute('data-theme', theme);
+                if (theme === 'dark') {
+                    btn.innerHTML = '<i class="bi bi-sun-fill"></i><span>Light mode</span>';
+                    btn.setAttribute('aria-label', 'Switch to light mode');
+                } else {
+                    btn.innerHTML = '<i class="bi bi-moon-stars-fill"></i><span>Dark mode</span>';
+                    btn.setAttribute('aria-label', 'Switch to dark mode');
+                }
+            }
+            apply(root.getAttribute('data-theme') || 'light');
+            btn.addEventListener('click', function () {
+                var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+                apply(next);
+                try { localStorage.setItem('theme', next); } catch (e) {}
+            });
+        })();
+
+        function openSidebar(id) {
+            document.getElementById('sidebar').classList.add('active');
+            document.querySelectorAll('.sidebar-content').forEach(el => el.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+        }
+        function closeSidebar() {
+            document.getElementById('sidebar').classList.remove('active');
+        }
+        
+        document.querySelectorAll(".faq-header").forEach(btn => {
+    btn.onclick = function(){
+
+        let item = this.parentElement;
+
+        document.querySelectorAll(".faq-item").forEach(faq=>{
+            if(faq!==item){
+                faq.classList.remove("active");
+            }
+        });
+
+        item.classList.toggle("active");
+    }
+});
+
+function updateMailButton() {
+    const name = $('#form-name').val();
+    const role = $('#form-role').val();
+    const message = $('#form-message').val();
+    
+    const subject = encodeURIComponent(`Hiring Inquiry from ${name}`);
+    const body = encodeURIComponent(`Hi Asur,\n\nName: ${name}\nHire me As: ${role}\n\nMessage:\n${message}`);
+    
+    if (name && name.trim() !== "" && message && message.trim() !== "") {
+        const mailtoLink = `mailto:your-email@example.com?subject=${subject}&body=${body}`;
+        $('#mail-button').attr('href', mailtoLink).removeClass('disabled');
+    } else {
+        $('#mail-button').removeAttr('href').addClass('disabled');
+    }
+}
+
+// 1. Run check immediately on page load
+updateMailButton();
+
+// 2. Run check whenever the user types or changes the fields
+$('#form-name, #form-role, #form-message').on('input change', updateMailButton);
+
+// 3. Show an alert if they try to click the button while fields are empty
+$('#mail-button').on('click', function(e) {
+    const name = $('#form-name').val();
+    const message = $('#form-message').val();
+    
+    if (!name || name.trim() === "" || !message || message.trim() === "") {
+        e.preventDefault(); // Prevents anything from happening
+        alert("Please do not leave required fields blank!");
+    }
+});
+
+document.getElementById('demoKR').addEventListener('click', function() {
+    window.open('https://saa985.github.io/kannada-rajyotsava/');
+});
+
+document.getElementById('demoCB').addEventListener('click', function() {
+    window.open('https://saa985.github.io/CBS_Seeker/');
+});
+
+
+    </script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    
+</body>
+</html>
